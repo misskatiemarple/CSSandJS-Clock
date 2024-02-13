@@ -10,17 +10,20 @@
       <div class="clock-face">
         <div class="hand hour-hand"></div>
         <div class="hand min-hand"></div>
+        <div class="hand second-hand"></div>
       </div>
     </div>
 
     <style>
       html {
-        background: url(https://www.pexels.com/photo/coffee-beans-1695052/);
+        background: #018ded url(https://unsplash.it/1500/1000?image=881&blur=5);
         background-size: cover;
+        font-family: "Courier New", Courier, monospace;
         text-align: center;
         font-size: 10px;
       }
       body {
+        margin: 0;
         font-size: 2rem;
         display: flex;
         flex: 1;
@@ -44,7 +47,7 @@
         position: relative;
         width: 100%;
         height: 100%;
-        transform: translateY(-3px);
+        transform: translateY(-3px); /* to take in the size of clock hands */
       }
 
       .hand {
@@ -53,7 +56,29 @@
         background: black;
         position: absolute;
         top: 50%;
+        transform-origin: 100%; /*by default its 50%, so the middle*/
+        transform: rotate(90deg); /*this gets all the hands to start at 12noon*/
+        transition: all 0.05s;
+        transition-timing-function: cubic-bezier(
+          0,
+          3.43,
+          0.58,
+          1
+        ); /*this gives it the rocking back and forth tick motion when it moves*/
       }
     </style>
+
+    <script>
+      const secondHand = document.querySelector(`.second-hand`);
+      function setDate() {
+        const now = new Date();
+        const seconds = now.getSeconds();
+        const secondsDegrees = (seconds / 60) * 360;
+        secondHand.style.transform = `rotate (${secondsDegrees}deg)`;
+        console.log(secondsDegrees);
+      }
+
+      setInterval(setDate, 1000);
+    </script>
   </body>
 </html>
